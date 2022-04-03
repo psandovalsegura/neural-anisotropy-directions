@@ -4,7 +4,7 @@ import torch
 from sklearn.decomposition import PCA
 
 from utils import input_numerical_jacobian
-
+from tqdm import tqdm
 
 class GradientCovarianceAnisotropyFinder:
 
@@ -37,7 +37,7 @@ class GradientCovarianceAnisotropyFinder:
     def sample_gradients(self):
         if self._gradients is None:
             self._gradients = []
-            for n in range(self.num_networks):
+            for n in tqdm(range(self.num_networks)):
                 self._gradients.append(self._numerical_input_derivative(self.model_gen_fun(), self.eval_point).cpu().view([-1]))
         return torch.stack(self._gradients).numpy()
 
